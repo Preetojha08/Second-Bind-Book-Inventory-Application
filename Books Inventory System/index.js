@@ -16,8 +16,8 @@ app.use(express.static('public'));
 // MySQL Connection
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'your_username', // Replace with your MySQL username
-    password: 'your_password', // Replace with your MySQL password
+    user: 'root', // Replace with your MySQL username
+    password: 'Papa@2062', // Replace with your MySQL password
     database: 'second_bind_book_inventory'
 });
 

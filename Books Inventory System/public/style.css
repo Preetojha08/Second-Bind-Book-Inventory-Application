@@ -1,32 +1,66 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-color: #f4f4f4; /* Light background for better contrast */
 }
 
-h1, h2 {
-    color: #333;
+h1 {
+    color: #007BFF; /* Blue color for the header */
+    text-align: center; /* Center the title */
+    margin-bottom: 20px; /* Space below the title */
 }
 
 form {
     margin-bottom: 20px;
+    background-color: #ffffff; /* White background for form */
+    padding: 20px; /* Inner spacing */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
 
 input {
     margin-right: 10px;
-    padding: 5px;
+    padding: 10px; /* Increased padding for better touch targets */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    width: calc(25% - 15px); /* Responsive width calculation */
 }
 
 button {
-    padding: 5px 10px;
+    padding: 10px 15px; /* Larger padding */
+    background-color: #007BFF; /* Primary button color */
+    color: white; /* Button text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    background-color: #ffffff; /* White background for table */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Prevent border-radius from being cut off */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
 
 th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    border: 1px solid #ddd; /* Light border for table cells */
+    padding: 10px; /* Increased padding */
+    text-align: left; /* Left align text */
+}
+
+th {
+    background-color: #007BFF; /* Header background color */
+    color: white; /* Header text color */
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Light gray background on row hover */
 }

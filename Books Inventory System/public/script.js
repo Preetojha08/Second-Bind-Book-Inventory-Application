@@ -1,9 +1,10 @@
 document.getElementById('addBookForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    
     const title = document.getElementById('title').value;
     const author = document.getElementById('author').value;
     const genre = document.getElementById('genre').value;
-    const publicationDate = document.getElementById('publicationDate').value;
+    const publicationDate = document.getElementById('publication_date').value;
     const isbn = document.getElementById('isbn').value;
 
     const response = await fetch('/api/books', {
@@ -15,37 +16,13 @@ document.getElementById('addBookForm').addEventListener('submit', async (e) => {
     if (response.ok) {
         alert('Book added successfully!');
         document.getElementById('addBookForm').reset();
-        fetchBooks();
+        fetchBooks(); // Refresh the book list
     } else {
         alert('Error adding book');
     }
 });
 
-document.getElementById('filterBooks').addEventListener('click', fetchBooks);
-
-async function fetchBooks() {
-    const title = document.getElementById('filterTitle').value;
-    const author = document.getElementById('filterAuthor').value;
-
-    const response = await fetch(`/api/books?title=${title}&author=${author}`);
-    const books = await response.json();
-    const booksList = document.getElementById('booksList').getElementsByTagName('tbody')[0];
-    booksList.innerHTML = '';
-
-    books.forEach(book => {
-        const row = booksList.insertRow();
-        row.innerHTML = `
-            <td>${book.entry_id}</td>
-            <td>${book.title}</td>
-            <td>${book.author}</td>
-            <td>${book.genre}</td>
-            <td>${book.publication_date}</td>
-            <td>${book.isbn}</td>
-        `;
-    });
-}
-
-document.getElementById('exportBooks').addEventListener('click', async () => {
+document.getElementById('exportButton').addEventListener('click', async () => {
     const response = await fetch('/api/books/export');
     const blob = await response.blob();
     const url = window.URL.createObjectURL(blob);
@@ -57,3 +34,52 @@ document.getElementById('exportBooks').addEventListener('click', async () => {
     a.click();
     window.URL.revokeObjectURL(url);
 });
+
+// Filter Books
+document.getElementById('filterButton').addEventListener('click', () => {
+    const filterTitle = document.getElementById('filterTitle').value;
+    const filterAuthor = document.getElementById('filterAuthor').value;
+
+    // Fetch books with filters applied
+    fetchBooks(filterTitle, filterAuthor);
+});
+
+// Function to fetch books data and display it in the table
+async function fetchBooks(filterTitle = '', filterAuthor = '') {
+    try {
+        // Construct the query parameters for filtering
+        const query = new URLSearchParams();
+        if (filterTitle) query.append('title', filterTitle);
+        if (filterAuthor) query.append('author', filterAuthor);
+
+        const response = await fetch(`/api/books?${query.toString()}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const books = await response.json();
+        const booksBody = document.getElementById('booksBody');
+
+        // Clear existing content
+        booksBody.innerHTML = '';
+
+        // Populate the table with books data
+        books.forEach(book => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${book.bk_title}</td>
+                <td>${book.bk_author}</td>
+                <td>${book.bk_genre}</td>
+                <td>${new Date(book.bk_publication_date).toLocaleDateString()}</td>
+                <td>${book.bk_isbn}</td>
+            `;
+            booksBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching books:', error);
+    }
+}
+
+// Call the function to fetch books when the page loads
+window.onload = () => {
+    fetchBooks(); // Fetch all books on initial load
+};

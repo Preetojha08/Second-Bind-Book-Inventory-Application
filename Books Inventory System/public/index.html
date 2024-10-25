@@ -4,40 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Inventory</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Book Inventory</h1>
 
     <!-- Form to Add New Book -->
     <form id="addBookForm">
-        <input type="text" id="title" placeholder="Title" required>
-        <input type="text" id="author" placeholder="Author" required>
-        <input type="text" id="genre" placeholder="Genre">
-        <input type="date" id="publication_date">
-        <input type="text" id="isbn" placeholder="ISBN" required>
+        <input type="text" id="title" placeholder="Title" required><br><br>
+        <input type="text" id="author" placeholder="Author" required><br><br>
+        <input type="text" id="genre" placeholder="Genre"><br><br>
+        <input type="date" id="publication_date"><br><br>
+        <input type="text" id="isbn" placeholder="ISBN" required><br><br>
         <button type="submit">Add Book</button>
     </form>
 
-    <!-- Button to Export to CSV -->
-    <button id="exportButton">Export to CSV</button>
+    <!-- Filter Inputs -->
+    <div>
+        <input type="text" id="filterTitle" placeholder="Filter by Title">
+        <input type="text" id="filterAuthor" placeholder="Filter by Author">
+        <button id="filterButton">Filter</button>
+    </div>
 
+    <br><br>
     <table id="booksTable">
         <thead>
             <tr>
@@ -53,105 +42,11 @@
         </tbody>
     </table>
 
-    <script>
-        // Function to fetch books data and display it in the table
-        async function fetchBooks() {
-            try {
-                const response = await fetch('http://localhost:3000/api/books');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const books = await response.json();
-                const booksBody = document.getElementById('booksBody');
+    <!-- Button to Export to CSV -->
+     <br>
+    <button id="exportButton">Export to CSV</button>
+    <a href=""><button> Add book </button> </a>
 
-                // Clear existing content
-                booksBody.innerHTML = '';
-
-                // Populate the table with books data
-                books.forEach(book => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${book.bk_title}</td>
-                        <td>${book.bk_author}</td>
-                        <td>${book.bk_genre}</td>
-                        <td>${new Date(book.bk_publication_date).toLocaleDateString()}</td>
-                        <td>${book.bk_isbn}</td>
-                    `;
-                    booksBody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error fetching books:', error);
-            }
-        }
-
-        // Function to add a new book
-        async function addBook(event) {
-            event.preventDefault(); // Prevent form submission
-
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
-            const genre = document.getElementById('genre').value;
-            const publication_date = document.getElementById('publication_date').value;
-            const isbn = document.getElementById('isbn').value;
-
-            try {
-                const response = await fetch('http://localhost:3000/api/books', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        title,
-                        author,
-                        genre,
-                        publication_date,
-                        isbn
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                // Clear form inputs
-                document.getElementById('addBookForm').reset();
-
-                // Fetch the updated list of books
-                fetchBooks();
-            } catch (error) {
-                console.error('Error adding book:', error);
-            }
-        }
-
-        // Function to export books to CSV
-        async function exportBooks() {
-            try {
-                const response = await fetch('http://localhost:3000/api/books/export');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                // Create a link to download the CSV file
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'books_inventory.csv';
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(url);
-            } catch (error) {
-                console.error('Error exporting books:', error);
-            }
-        }
-
-        // Event listeners
-        document.getElementById('addBookForm').addEventListener('submit', addBook);
-        document.getElementById('exportButton').addEventListener('click', exportBooks);
-
-        // Call the function to fetch books when the page loads
-        window.onload = fetchBooks;
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
