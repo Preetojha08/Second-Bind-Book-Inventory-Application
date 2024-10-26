@@ -1,77 +1,57 @@
 const express = require('express');
-const mysql = require('mysql2');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const fs = require('fs');
-const json2csv = require('json2csv').parse;
+const path = require('path');
 
 const app = express();
 const port = 3000;
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// MySQL Connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', // Replace with your MySQL username
-    password: 'Papa@2062', // Replace with your MySQL password
-    database: 'second_bind_book_inventory'
+// Simulated database
+let books = [];
+
+// Serve the main page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Connect to the database
-db.connect((err) => {
-    if (err) throw err;
-    console.log('MySQL Connected!');
+// Serve the add book page
+app.get('/add', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'AddBook.html'));
 });
 
-// Routes
-
-// Add New Book
-app.post('/api/books', (req, res) => {
-    const { title, author, genre, publication_date, isbn } = req.body;
-    const sql = 'INSERT INTO Bk_Inventory (bk_title, bk_author, bk_genre, bk_publication_date, bk_isbn) VALUES (?, ?, ?, ?, ?)';
-    db.query(sql, [title, author, genre, publication_date, isbn], (err, result) => {
-        if (err) return res.status(500).send(err);
-        res.status(201).send({ message: 'Book added successfully!' });
-    });
-});
-
-// Filter Books
+// API route to get all books
 app.get('/api/books', (req, res) => {
     const { title, author } = req.query;
-    let sql = 'SELECT * FROM Bk_Inventory WHERE 1=1';
-    const params = [];
+    let filteredBooks = books;
+
     if (title) {
-        sql += ' AND bk_title LIKE ?';
-        params.push(`%${title}%`);
+        filteredBooks = filteredBooks.filter(book => book.bk_title.toLowerCase().includes(title.toLowerCase()));
     }
     if (author) {
-        sql += ' AND bk_author LIKE ?';
-        params.push(`%${author}%`);
+        filteredBooks = filteredBooks.filter(book => book.bk_author.toLowerCase().includes(author.toLowerCase()));
     }
-    db.query(sql, params, (err, results) => {
-        if (err) return res.status(500).send(err);
-        res.send(results);
-    });
+    
+    res.json(filteredBooks);
 });
 
-// Export Data
-app.get('/api/books/export', (req, res) => {
-    db.query('SELECT * FROM Bk_Inventory', (err, results) => {
-        if (err) return res.status(500).send(err);
-        const csv = json2csv(results);
-        fs.writeFileSync('books_inventory.csv', csv);
-        res.download('books_inventory.csv', 'books_inventory.csv', (err) => {
-            if (err) throw err;
-            fs.unlinkSync('books_inventory.csv'); // Delete the file after download
-        });
-    });
+// API route to add a new book
+app.post('/api/books', (req, res) => {
+    const { title, author, genre, publication_date, isbn } = req.body;
+
+    const newBook = {
+        bk_title: title,
+        bk_author: author,
+        bk_genre: genre,
+        bk_publication_date: publication_date,
+        bk_isbn: isbn,
+    };
+
+    books.push(newBook);
+    res.status(201).json(newBook);
 });
 
-// Start Server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });

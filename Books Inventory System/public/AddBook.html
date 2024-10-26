@@ -3,26 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Book in Inventory</title>
+    <title>Add New Book</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <h1>Book Inventory</h1>
-
-    <!-- Form to Add New Book -->
+    <h1>Add New Book</h1>
     <form id="addBookForm">
-        <input type="text" id="title" placeholder="Title" required><br><br>
-        <input type="text" id="author" placeholder="Author" required><br><br>
-        <input type="text" id="genre" placeholder="Genre"><br><br>
-        <input type="date" id="publication_date"><br><br>
-        <input type="text" id="isbn" placeholder="ISBN" required><br><br>
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="text" id="author" placeholder="Author" required>
+        <input type="text" id="genre" placeholder="Genre" required>
+        <input type="date" id="publication_date" required>
+        <input type="text" id="isbn" placeholder="ISBN" required>
         <button type="submit">Add Book</button>
     </form>
-    
-    <button> Add book </button>
-
-    <script src="script.js"></script>
-
+    <button onclick="location.href='/'">Back to Inventory</button>
+    <script src="add-script.js"></script>
 </body>
 </html>

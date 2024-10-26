@@ -1,41 +1,3 @@
-document.getElementById('addBookForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const title = document.getElementById('title').value;
-    const author = document.getElementById('author').value;
-    const genre = document.getElementById('genre').value;
-    const publicationDate = document.getElementById('publication_date').value;
-    const isbn = document.getElementById('isbn').value;
-
-    const response = await fetch('/api/books', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, author, genre, publication_date: publicationDate, isbn })
-    });
-
-    if (response.ok) {
-        alert('Book added successfully!');
-        document.getElementById('addBookForm').reset();
-        fetchBooks(); // Refresh the book list
-    } else {
-        alert('Error adding book');
-    }
-});
-
-document.getElementById('exportButton').addEventListener('click', async () => {
-    const response = await fetch('/api/books/export');
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = 'books_inventory.csv';
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-});
-
-// Filter Books
 document.getElementById('filterButton').addEventListener('click', () => {
     const filterTitle = document.getElementById('filterTitle').value;
     const filterAuthor = document.getElementById('filterAuthor').value;
@@ -78,6 +40,50 @@ async function fetchBooks(filterTitle = '', filterAuthor = '') {
         console.error('Error fetching books:', error);
     }
 }
+
+// Function to export the books to CSV
+async function exportToCSV() {
+    try {
+        const response = await fetch('/api/books');
+        const books = await response.json();
+
+        if (!books.length) {
+            alert('No books available to export.');
+            return;
+        }
+
+        // Prepare CSV content
+        const csvRows = [
+            ['Title', 'Author', 'Genre', 'Publication Date', 'ISBN'], // Header
+            ...books.map(book => [
+                book.bk_title,
+                book.bk_author,
+                book.bk_genre,
+                new Date(book.bk_publication_date).toLocaleDateString(),
+                book.bk_isbn
+            ])
+        ];
+
+        // Create a CSV string
+        const csvString = csvRows.map(row => row.join(',')).join('\n');
+
+        // Create a blob and a link to download the CSV
+        const blob = new Blob([csvString], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'books.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url); // Clean up the URL object
+    } catch (error) {
+        console.error('Error exporting to CSV:', error);
+    }
+}
+
+// Add event listener for the export button
+document.getElementById('exportButton').addEventListener('click', exportToCSV);
 
 // Call the function to fetch books when the page loads
 window.onload = () => {

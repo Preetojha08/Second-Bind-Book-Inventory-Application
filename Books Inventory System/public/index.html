@@ -8,26 +8,12 @@
 </head>
 <body>
     <h1>Book Inventory</h1>
-
-    <!-- Form to Add New Book -->
-    <form id="addBookForm">
-        <input type="text" id="title" placeholder="Title" required><br><br>
-        <input type="text" id="author" placeholder="Author" required><br><br>
-        <input type="text" id="genre" placeholder="Genre"><br><br>
-        <input type="date" id="publication_date"><br><br>
-        <input type="text" id="isbn" placeholder="ISBN" required><br><br>
-        <button type="submit">Add Book</button>
-    </form>
-
-    <!-- Filter Inputs -->
-    <div>
-        <input type="text" id="filterTitle" placeholder="Filter by Title">
-        <input type="text" id="filterAuthor" placeholder="Filter by Author">
-        <button id="filterButton">Filter</button>
-    </div>
-
-    <br><br>
-    <table id="booksTable">
+    <button onclick="location.href='/AddBook.html'">Add New Book</button>
+    <input type="text" id="filterTitle" placeholder="Filter by Title">
+    <input type="text" id="filterAuthor" placeholder="Filter by Author">
+    <button id="filterButton">Filter</button>
+    <button id="exportButton">Export to CSV</button>
+    <table>
         <thead>
             <tr>
                 <th>Title</th>
@@ -37,16 +23,8 @@
                 <th>ISBN</th>
             </tr>
         </thead>
-        <tbody id="booksBody">
-            <!-- Book data will be inserted here -->
-        </tbody>
+        <tbody id="booksBody"></tbody>
     </table>
-
-    <!-- Button to Export to CSV -->
-     <br>
-    <button id="exportButton">Export to CSV</button>
-    <a href=""><button> Add book </button> </a>
-
     <script src="script.js"></script>
 </body>
 </html>
