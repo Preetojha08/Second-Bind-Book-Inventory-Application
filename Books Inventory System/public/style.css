@@ -1,11 +1,56 @@
+/* Basic Styles */
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
     padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto; /* Add vertical margin */
+    padding: 20px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 h1 {
     text-align: center;
+    color: #333;
+    margin-bottom: 20px; /* Add margin below heading */
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 12px 20px; /* Adjust padding for buttons */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 1;
+    margin: 5px; /* Maintain margin between buttons */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+input[type="text"], input[type="date"] {
+    padding: 12px; /* Increase padding for inputs */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+    margin: 5px; /* Maintain margin for inputs */
+    min-width: 150px; /* Ensure minimum width for inputs */
 }
 
 table {
@@ -16,7 +61,7 @@ table {
 
 th, td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 10px; /* Increase padding for table cells */
     text-align: left;
 }
 
@@ -24,6 +69,50 @@ th {
     background-color: #f2f2f2;
 }
 
-button {
-    margin: 10px;
+/* Back Button */
+.back-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #28a745;
+    padding: 12px 20px; /* Adjust padding for back button */
+}
+
+.back-button:hover {
+    background-color: #218838;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    button, input[type="text"], input[type="date"] {
+        width: 100%; /* Full width on mobile */
+        margin: 10px 0; /* Adjust margin for better spacing on mobile */
+    }
+
+    table {
+        font-size: 14px; /* Smaller font size for better fit */
+    }
+
+    th, td {
+        padding: 12px; /* Increase padding for table cells on mobile */
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    /* Styles for tablet/laptop screens */
+    .container {
+        padding: 30px; /* More padding on larger screens */
+    }
+
+    button, input[type="text"], input[type="date"] {
+        margin: 10px 5px; /* Slightly more spacing on larger screens */
+    }
+
+    th, td {
+        padding: 12px; /* Adjust padding for table cells */
+    }
 }

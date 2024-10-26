@@ -4,27 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Inventory</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for better readability */
+        body {
+            background-color: #f8f9fa;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Book Inventory</h1>
-    <button onclick="location.href='/AddBook.html'">Add New Book</button>
-    <input type="text" id="filterTitle" placeholder="Filter by Title">
-    <input type="text" id="filterAuthor" placeholder="Filter by Author">
-    <button id="filterButton">Filter</button>
-    <button id="exportButton">Export to CSV</button>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Genre</th>
-                <th>Publication Date</th>
-                <th>ISBN</th>
-            </tr>
-        </thead>
-        <tbody id="booksBody"></tbody>
-    </table>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Book Inventory</h1>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-inline">
+                <input type="text" id="filterTitle" class="form-control mb-2 mr-2" placeholder="Filter by Title">
+                <input type="text" id="filterAuthor" class="form-control mb-2 mr-2" placeholder="Filter by Author">
+                <div class="d-flex align-items-center mb-2">
+                    <button id="filterButton" class="btn btn-info mr-2">Filter</button>
+                    <button id="exportButton" class="btn btn-success mr-2">Export to CSV</button>
+                    <button class="btn btn-primary" onclick="location.href='/AddBook.html'">Add New Book</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Publication Date</th>
+                        <th>ISBN</th>
+                    </tr>
+                </thead>
+                <tbody id="booksBody">
+                    <!-- Dynamic content will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
+    
 </body>
 </html>
